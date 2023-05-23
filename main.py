@@ -2,7 +2,7 @@ import os
 import pandas as pd
 
 # Load CSV data into a pandas DataFrame
-data = pd.read_csv(r'C:\Users\dhnag\Downloads\test_labels (1).csv')
+data = pd.read_csv(r'/content/test_labels.csv')
 
 # Filter only relevant classes from the CSV data
 relevant_classes = ['Car', 'Pedestrian', 'Cyclist']  # Note the capitalization as per your txt file data
@@ -12,11 +12,11 @@ data = data[data['label'].isin(relevant_classes)]
 csv_dict = data.groupby('index')['label'].apply(list).to_dict()
 print(csv_dict)
 # Directory where the txt files are located
-txt_dir = r'C:\Users\dhnag\Downloads\data_object_label_2\training\label_2'
+txt_dir = r'/content/label_2'
 
 # Counter for missing classes
 missing_classes = 0
-n=10 #number of images considered
+n=100 #number of images considered
 # Create a sorted list of the txt files
 txt_files = sorted(os.listdir(txt_dir))
 txt_files = txt_files[:n]
@@ -43,5 +43,7 @@ for filename in txt_files:
                 # If the class is not in the CSV data or the count is less, increment the missing counter
                 if csv_classes.count(cls) < txt_classes.count(cls):
                     missing_classes += 1
-
+accuracy = 100-((missing_classes/n)*100)
 print(f"Total missing classes: {missing_classes}")
+print(f"Accuracy: {accuracy}")
+
